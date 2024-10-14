@@ -80,4 +80,14 @@ mod test {
 
         assert_eq!("00:01", timer.to_string());
     }
+
+    #[test]
+    fn test_to_string_one_minute_five_seconds_stopped() {
+        let timer = Timer{
+            additional_time: Duration::default(),
+            start_time: Some(Instant::now() - Duration::from_secs(1)),
+        };
+
+        assert_eq!("00:01", timer.to_string());
+    }
 }
