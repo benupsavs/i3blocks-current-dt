@@ -85,9 +85,9 @@ mod test {
     fn test_to_string_one_minute_five_seconds_stopped() {
         let timer = Timer{
             additional_time: Duration::default(),
-            start_time: Some(Instant::now() - Duration::from_secs(1)),
+            start_time: Some(Instant::now() - Duration::from_secs(65)),
         };
 
-        assert_eq!("00:01", timer.to_string());
+        assert_eq!("01:05", timer.to_string());
     }
 }
