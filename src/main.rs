@@ -26,16 +26,13 @@ fn main() -> io::Result<()> {
         loop {
             line.clear();
             if let Ok(_) = input.read_line(&mut line) {
+                let mut switch_to = None;
                 match line.trim_end() {
                     "3" => { // Right mouse button, switch modes
                         match display_state {
-                            DisplayState::Clock => display_state = DisplayState::Date,
-                            DisplayState::Date => display_state = DisplayState::Timer,
-                            DisplayState::Timer => display_state = DisplayState::Clock,
-                        }
-                        if let Err(e) = tx.send(display_state) {
-                            eprintln!("error: {e}");
-                            break;
+                            DisplayState::Clock => switch_to = Some(DisplayState::Date),
+                            DisplayState::Date => switch_to = Some(DisplayState::Timer),
+                            DisplayState::Timer => switch_to = Some(DisplayState::Clock),
                         }
                     },
                     "1" => { // Left Mouse Button, start/stop timer
@@ -45,6 +42,8 @@ fn main() -> io::Result<()> {
                                 eprintln!("error: {e}");
                             }
                         }
+
+                        switch_to = Some(DisplayState::Timer);
                     },
                     "2" => { // Middle Mouse Button, reset timer
                         if let Ok(mut timer) = timer_ref_1.lock() {
@@ -53,8 +52,17 @@ fn main() -> io::Result<()> {
                                 eprintln!("error: {e}");
                             }
                         }
+
+                        switch_to = Some(DisplayState::Timer);
                     },
                     _ => {},
+                }
+                if let Some(switch_to) = switch_to {
+                    display_state = switch_to;
+                    if let Err(e) = tx.send(switch_to) {
+                        eprintln!("error: {e}");
+                        break;
+                    }
                 }
             } else {
                 break;
