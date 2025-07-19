@@ -4,6 +4,7 @@
 - Minimal Rust binary, hardly uses any resources
 - Runs constantly, rather than needing to spawn a process every N seconds
 - Only sends updates to i3blocks once per second
+- Has a timer, if you want to see how long you just spend doing something :)
 
 ## Prerequisite
 - Rust
