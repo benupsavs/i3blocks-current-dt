@@ -1,4 +1,4 @@
-# Current date/time for i3blocks
+# Current date/time blocklet for i3blocks
 
 ## Why?
 - Minimal Rust binary, hardly uses any resources
